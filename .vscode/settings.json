@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Rewind Puzzler.slnx"
+    "dotnet.defaultSolution": "Rewind Puzzler.slnx",
+    "liveServer.settings.port": 5501
 }
