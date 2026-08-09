@@ -10,6 +10,9 @@ public class InputClientManager : MonoBehaviour
     [SerializeField]
     private MovementReciever movementReciever;
 
+    [SerializeField]
+    private SeededMazeGenerator maze;
+
     private void Awake()
     {
         _rewindPuzzlerApp =  new();
@@ -17,16 +20,28 @@ public class InputClientManager : MonoBehaviour
         inputActions.Player.Enable();
         inputActions.Player.Move.performed += OnMovePlayer;
         inputActions.Player.Undo.performed += OnUndo;
+        Reset();
+    }
+
+    //Called on GenerateButton UI unityButton
+    public void Reset()
+    {        
+        movementReciever.transform.position = maze.StartWorldPosition;
+        _rewindPuzzlerApp.ResetStack();
     }
 
     private void OnMovePlayer(InputAction.CallbackContext context)
     {
-        ICommand moveCommand = new MoveCommand(context.ReadValue<Vector2>(), movementReciever);
-        _rewindPuzzlerApp.AddCommand(moveCommand);
+        Vector2 movement = context.ReadValue<Vector2>();
+        if (movementReciever.IsValidMove(movement))
+        {
+            ICommand moveCommand = new MoveCommand(movement, movementReciever, maze);
+            _rewindPuzzlerApp.ExecuteCommand(moveCommand);
+        }
     }
 
     private void OnUndo(InputAction.CallbackContext context)
-    {
+    {        
         _rewindPuzzlerApp.UndoCommand();
     }
 }

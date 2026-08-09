@@ -10,7 +10,7 @@ public class RewindPuzzlerApp
         _commands =  new Stack<ICommand>();
     }
 
-    public void AddCommand(ICommand command)
+    public void ExecuteCommand(ICommand command)
     {
         command.Execute();
         _commands.Push(command);
@@ -18,10 +18,14 @@ public class RewindPuzzlerApp
 
     public void UndoCommand()
     {
-        if (_commands.Count>0)
+        if (_commands.Count > 0)
         {
             ICommand lastCommand = _commands.Pop();
             lastCommand.Undo();
         }
+    }
+    public void ResetStack()
+    {
+        _commands.Clear();
     }
 }

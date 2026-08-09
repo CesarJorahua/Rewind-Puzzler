@@ -4,19 +4,22 @@ public class MoveCommand : ICommand
 {
     MovementReciever _player;
     Vector2 _movement;
-    public MoveCommand(Vector2 movement, MovementReciever manager)
+    SeededMazeGenerator _maze;
+
+    public MoveCommand(Vector2 movement, MovementReciever manager, SeededMazeGenerator maze)
     {
         _movement = movement;
         _player = manager;
+        _maze = maze;
     }
 
     public void Execute()
     {
-        _player.MovePlayer(_movement);
+        _player.Move(_movement);
     }
 
     public void Undo()
     {
-        _player.MovePlayer(_movement*-1f);
+        _player.Move(-_movement);
     }
 }
