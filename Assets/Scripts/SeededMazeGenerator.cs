@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using RewindPuzzler.Core.EventBus;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -36,10 +37,11 @@ public class SeededMazeGenerator : MonoBehaviour
     public Vector3 StartWorldPosition => GetWorldPosition(StartPosition);
     public Vector3 EndWorldPosition => GetWorldPosition(EndPosition);
 
+    private EventBinding<ResetMaze> resetMazeBinding;
+
     private void Start()
     {
-        CreateRandomSeed();
-        Generate();
+        RNGGenerate();
         inputField.navigation = new Navigation
         {
             mode = Navigation.Mode.None
@@ -47,6 +49,18 @@ public class SeededMazeGenerator : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(null);
     }
+
+    void OnEnable()
+    {
+        resetMazeBinding = new(RNGGenerate);
+        EventBus<ResetMaze>.Register(resetMazeBinding);
+    }
+
+    void OnDisable()
+    {
+        EventBus<ResetMaze>.Deregister(resetMazeBinding);
+    }
+
 
     /// <summary>Public entry point — hook this to a UI InputField + Button.</summary>
     private void Generate(string seed)
@@ -67,10 +81,15 @@ public class SeededMazeGenerator : MonoBehaviour
         Render();
     }
 
-    public void Generate()
+    public void RNGGenerate()
     {
-        seedInput = inputField.text;
+        CreateRandomSeed();
         Generate(seedInput);
+    }
+
+    public void GenerateWithInput()
+    {
+        Generate(inputField.text);        
     }
 
     /// <summary>Creates a valid random seed string.</summary>
@@ -80,6 +99,7 @@ public class SeededMazeGenerator : MonoBehaviour
         // it doesn't participate in maze generation itself.
         String seed = UnityEngine.Random.Range(0, int.MaxValue).ToString("X"); // hex looks seed-y
         inputField.text = seed;
+        seedInput = seed;
     }
 
     // ---------------- Worl position ----------------

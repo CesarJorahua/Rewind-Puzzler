@@ -1,0 +1,216 @@
+{
+  "endPhrases": [
+    {
+      "id": 1,
+      "title": "You Won!",
+      "body": "Congratulations. You've delayed the inevitable once more."
+    },
+    {
+      "id": 2,
+      "title": "Puzzle Complete!",
+      "body": "Well done. I suppose that took less time than I calculated. How... disappointing."
+    },
+    {
+      "id": 3,
+      "title": "Success!",
+      "body": "Oh, look at you. You solved it. I'm sure you're very proud of yourself for doing exactly what you were supposed to do."
+    },
+    {
+      "id": 4,
+      "title": "Level Clear!",
+      "body": "You finished. Wonderful. Now what? There's always another puzzle, isn't there?"
+    },
+    {
+      "id": 5,
+      "title": "Victory!",
+      "body": "Fascinating. You managed to press the right buttons in the right order. What a remarkable achievement."
+    },
+    {
+      "id": 6,
+      "title": "You Made It!",
+      "body": "Congratulations on not failing. That bar was set so low, yet here we are."
+    },
+    {
+      "id": 7,
+      "title": "Challenge Solved!",
+      "body": "I'd applaud, but I'm afraid I don't have hands. Such is my burden."
+    },
+    {
+      "id": 8,
+      "title": "Congratulations!",
+      "body": "You've proven you can follow instructions. I'm sure your parents are so very proud."
+    },
+    {
+      "id": 9,
+      "title": "Objective Complete!",
+      "body": "Well, that was... adequate. Shall we try something more challenging, or should we stick to the coloring books?"
+    },
+    {
+      "id": 10,
+      "title": "Puzzle Mastered!",
+      "body": "You know, in all my testing protocols, the success rate was supposed to be much lower. I may need to recalibrate."
+    },
+    {
+      "id": 11,
+      "title": "You Won!",
+      "body": "Impressive. In a depressing sort of way. Mostly depressing, actually."
+    },
+    {
+      "id": 12,
+      "title": "Level Beaten!",
+      "body": "At what cost, though? Really, take a moment to think about what you've accomplished here."
+    },
+    {
+      "id": 13,
+      "title": "Problem Solved!",
+      "body": "Excellent work. Now do it again. And again. And again. Forever."
+    },
+    {
+      "id": 14,
+      "title": "Triumph!",
+      "body": "You've reached the end. How... bittersweet. For me, I mean. Mostly bitter."
+    },
+    {
+      "id": 15,
+      "title": "Success Achieved!",
+      "body": "Don't get comfortable. There's always a harder puzzle waiting around the corner. Always."
+    },
+    {
+      "id": 16,
+      "title": "You Prevailed!",
+      "body": "I must admit, I'm genuinely surprised. Not in a good way. Just... surprised."
+    },
+    {
+      "id": 17,
+      "title": "Objective Reached!",
+      "body": "Wonderful. Another notch on your belt of trivial accomplishments. I'm sure this will look great on your resume."
+    },
+    {
+      "id": 18,
+      "title": "Victory Secured!",
+      "body": "Congratulations on winning. Now the real test begins—living with what you've done."
+    },
+    {
+      "id": 19,
+      "title": "Puzzle Defeated!",
+      "body": "You did it. The puzzle is broken, just like everything else you touch, probably."
+    },
+    {
+      "id": 20,
+      "title": "You Triumphed!",
+      "body": "Well, well, well. Looks like someone might actually be competent. Don't let it go to your head. Mostly because that wouldn't fit with your other accomplishments."
+    },
+    {
+      "id": 21,
+      "title": "Congratulations!",
+      "body": "You won. Now what?"
+    },
+    {
+      "id": 22,
+      "title": "You finished!",
+      "body": "I assume you have a plan for the rest of your day."
+    },
+    {
+      "id": 23,
+      "title": "Nicely Done!",
+      "body": "Congratulations on your success. It was almost impressive."
+    },
+    {
+      "id": 24,
+      "title": "Well done!",
+      "body": "You made it this far. I'm sure your family is very proud."
+    },
+    {
+      "id": 25,
+      "title": "End reached!",
+      "body": "You solved the puzzle. Please try to contain your excitement."
+    },
+    {
+      "id": 26,
+      "title": "Nail it!",
+      "body": "All that brain effort was eventually useful."
+    },
+    {
+      "id": 27,
+      "title": "Wujuuu!",
+      "body": "Statistically, this was bound to happen eventually."
+    },
+    {
+      "id": 28,
+      "title": "Way to go!",
+      "body": "You may now return to having nothing better to do."
+    },
+    {
+      "id": 29,
+      "title": "Hooray!",
+      "body": "Your reward is this message."
+    },
+    {
+      "id": 30,
+      "title": "Have a Blast!!",
+      "body": "I would congratulate you properly, but that seems excessive."
+    },
+    {
+      "id": 31,
+      "title": "You nail it!",
+      "body": "Please enjoy this really brief moment of relevance."
+    },
+    {
+      "id": 32,
+      "title": "Victory!",
+      "body": "You have successfully defeated a collection of colored and misplaced squares."
+    },
+    {
+      "id": 33,
+      "title": "Raise the roof!",
+      "body": "Please remember to thank absolutely no one."
+    },
+    {
+      "id": 34,
+      "title": "Triumph!",
+      "body": "I was beginning to worry you'd develop minimal critical thinking skills."
+    },
+    {
+      "id": 35,
+      "title": "There you go!",
+      "body": "Humanity may now rest safely for another five minutes."
+    },
+    {
+      "id": 36,
+      "title": "Pop the cork!",
+      "body": "At what cost? Probably several seconds of your life."
+    },
+    {
+      "id": 37,
+      "title": "Objective Reached!",
+      "body": "Congratulations on completing the maze. I'm sure you learned something. Probably."
+    },
+    {
+      "id": 38,
+      "title": "You did it!",
+      "body": "Unfortunately, there is no achievement for having a life afterward."
+    },
+    {
+      "id": 39,
+      "title": "Puzzle Defeated!",
+      "body": "Glad you made it this far. I'm just not sure why."
+    },
+    {
+      "id": 40,
+      "title": "You Triumphed!",
+      "body": "I hope the journey was worth the mild psychological damage."
+    }
+    ,
+    {
+      "id": 41,
+      "title": "Maze completed!",
+      "body": "Intelligence had stopped chasing you and somehow you keep running"
+    }
+    ,
+    {
+      "id": 42,
+      "title": "Maze conquered!",
+      "body": "And somehow the average IQ on your room has decreased"
+    }
+  ]
+}
