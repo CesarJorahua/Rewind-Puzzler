@@ -19,11 +19,11 @@ public class TypewriteEffect : MonoBehaviour
     private WaitForSeconds _simpleDelay;
     private WaitForSeconds _punctuationDelay;
 
-    private bool isInitialized;
+    private bool _isInitialized;
 
     private void Initialize()
     {
-        isInitialized = true;
+        _isInitialized = true;
         _textBox = GetComponent<TMP_Text>();
         _simpleDelay = new WaitForSeconds(1 / speed);
         _punctuationDelay = new WaitForSeconds(punctuationDelay);
@@ -31,7 +31,7 @@ public class TypewriteEffect : MonoBehaviour
 
     public void SetText(string text)
     {
-        if(!isInitialized)
+        if(!_isInitialized)
             Initialize();
 
         if (_typewriteCoroutine != null)

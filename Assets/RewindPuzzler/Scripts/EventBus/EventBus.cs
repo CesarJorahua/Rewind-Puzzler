@@ -4,9 +4,9 @@ using UnityEngine;
 namespace RewindPuzzler.Core.EventBus
 {
     public static class EventBus<T> where T : IEvent {
-        static readonly List<IEventBinding<T>> _buffer = new();
+        static readonly List<IEventBinding<T>> Buffer = new();
         static bool _dirty = true;
-        static readonly HashSet<IEventBinding<T>> Bindings = new HashSet<IEventBinding<T>>();
+        private static readonly HashSet<IEventBinding<T>> Bindings = new();
 
         public static void Register(EventBinding<T> b)
         {
@@ -22,10 +22,10 @@ namespace RewindPuzzler.Core.EventBus
 
         public static void Raise(T @event)
         {
-            if (_dirty) { _buffer.Clear(); _buffer.AddRange(Bindings); _dirty = false; }
-            for (int i = 0; i < _buffer.Count; i++)
+            if (_dirty) { Buffer.Clear(); Buffer.AddRange(Bindings); _dirty = false; }
+            for (int i = 0; i < Buffer.Count; i++)
             {
-                var binding = _buffer[i];
+                IEventBinding<T> binding = Buffer[i];
                 if (!Bindings.Contains(binding)) continue;
                 if(binding.Filter != null && !binding.Filter(@event)) continue;
                 // Both default to no-op lambdas, so invoking both supports bindings made

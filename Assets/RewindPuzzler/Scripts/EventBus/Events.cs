@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+// ReSharper disable CheckNamespace
 
 namespace RewindPuzzler.Core.EventBus
 {

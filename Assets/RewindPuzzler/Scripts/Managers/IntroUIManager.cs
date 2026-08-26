@@ -9,61 +9,61 @@ public class IntroUIManager : MonoBehaviour
     [SerializeField] Transform introUIParent;
     [SerializeField] InputClientManager inputClientManager;
 
-    private int currentPlayerListIndex;
-    private GameObject currentPlayerSelected;
-    private int characterCount;
+    private int _currentPlayerListIndex;
+    private GameObject _currentPlayerSelected;
+    private int _characterCount;
 
-    private EventBinding<CharacterSelect> characterSelectbinding;
+    private EventBinding<CharacterSelect> _characterSelectbinding;
 
     void Start()
     {
-        characterCount = playerCharacterList.Count-1;
+        _characterCount = playerCharacterList.Count-1;
         SetCharacter();
     }
 
     private void OnEnable()
     {
-        characterSelectbinding = new (SetCharacter);
-        EventBus<CharacterSelect>.Register(characterSelectbinding);
+        _characterSelectbinding = new (SetCharacter);
+        EventBus<CharacterSelect>.Register(_characterSelectbinding);
     }
 
     private void OnDisable()
     {
-        EventBus<CharacterSelect>.Deregister(characterSelectbinding);        
+        EventBus<CharacterSelect>.Deregister(_characterSelectbinding);        
     }
 
     public void NextCharacter()
     {
-        if (currentPlayerListIndex<characterCount)
+        if (_currentPlayerListIndex<_characterCount)
         {
-            currentPlayerListIndex++;
+            _currentPlayerListIndex++;
         }
         else
         {
-            currentPlayerListIndex = 0;
+            _currentPlayerListIndex = 0;
         }
         SetCharacter();
     }
 
     public void PrevCharacter()
     {
-        if (currentPlayerListIndex>0)
+        if (_currentPlayerListIndex>0)
         {
-            currentPlayerListIndex--;
+            _currentPlayerListIndex--;
         }
         else
         {
-            currentPlayerListIndex = characterCount;
+            _currentPlayerListIndex = _characterCount;
         }
         SetCharacter();   
     }
 
     public void SetCharacter()
     {
-        if(currentPlayerSelected)
-            Destroy(currentPlayerSelected);
-        currentPlayerSelected = Instantiate(playerCharacterList[currentPlayerListIndex]);
-        ConfigurePlayerPosition(currentPlayerSelected.transform);
+        if(_currentPlayerSelected)
+            Destroy(_currentPlayerSelected);
+        _currentPlayerSelected = Instantiate(playerCharacterList[_currentPlayerListIndex]);
+        ConfigurePlayerPosition(_currentPlayerSelected.transform);
     }
 
     private void ConfigurePlayerPosition(Transform playerTransform)
@@ -81,11 +81,11 @@ public class IntroUIManager : MonoBehaviour
 
     private void PlayButtonHit()
     {
-        MovementReciever component = currentPlayerSelected.AddComponent<MovementReciever>();
+        MovementReciever component = _currentPlayerSelected.AddComponent<MovementReciever>();
         component.SetObstacleMask(LayerMask.GetMask("Obstacle"));
         introUIParent.parent.gameObject.SetActive(false);
-        currentPlayerSelected.transform.SetParent(null);
-        currentPlayerSelected.transform.localScale = Vector3.one;
+        _currentPlayerSelected.transform.SetParent(null);
+        _currentPlayerSelected.transform.localScale = Vector3.one;
         inputClientManager.MovementReciever = component;
         component.EnableMovement();
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
+// ReSharper disable CheckNamespace
 
 namespace RewindPuzzler.Core.EventBus
 {
@@ -9,8 +11,8 @@ namespace RewindPuzzler.Core.EventBus
     /// Contains methods and properties related to event buses and event types in the Unity application.
     /// </summary>
     public static class EventBusUtil {
-        public static IReadOnlyList<Type> EventTypes { get; set; }
-        public static IReadOnlyList<Type> EventBusTypes { get; set; }
+        private static IReadOnlyList<Type> EventTypes { get; set; }
+        private static IReadOnlyList<Type> EventBusTypes { get; set; }
 
         /// <summary>
         /// Initializes the EventBusUtil class at runtime before the loading of any scene.
@@ -25,13 +27,9 @@ namespace RewindPuzzler.Core.EventBus
             EventBusTypes = InitializeAllBuses();
         }
 
-        static List<Type> InitializeAllBuses() {
-            List<Type> eventBusTypes = new List<Type>();
+        private static List<Type> InitializeAllBuses() {
             var typedef = typeof(EventBus<>);
-            foreach (var eventType in EventTypes) {
-                eventBusTypes.Add(typedef.MakeGenericType(eventType));
-            }
-            return eventBusTypes;
+            return EventTypes.Select(eventType => typedef.MakeGenericType(eventType)).ToList();
         }
 
         /// <summary>

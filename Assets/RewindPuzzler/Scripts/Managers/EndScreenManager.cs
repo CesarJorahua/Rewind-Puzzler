@@ -15,55 +15,55 @@ public class EndScreenManager : MonoBehaviour
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text bodyText;
     [SerializeField] private AudioSource bgAudio;
-    [SerializeField] private GameObject EndScreenGameObject;
+    [SerializeField] private GameObject endScreenGameObject;
 
-    private EndMessageList endMessageData;
-    private EventBinding<ReachEndMaze> endMazeBinding;
-    private EventBinding<ResetMaze> resetMazeBinding;
-    private string titleRNG;
-    private string bodyRNG;
+    private EndMessageList _endMessageData;
+    private EventBinding<ReachEndMaze> _endMazeBinding;
+    private EventBinding<ResetMaze> _resetMazeBinding;
+    private string _titleRng;
+    private string _bodyRng;
 
-    private EndMessageData randomPhraseTitle;
-    private EndMessageData randomPhraseBody;
+    private EndMessageData _randomPhraseTitle;
+    private EndMessageData _randomPhraseBody;
 
 
     private void OnEnable()
     {
-        endMazeBinding =  new EventBinding<ReachEndMaze>(OnPlayerEndMaze);
-        resetMazeBinding =  new EventBinding<ResetMaze>(OnResetMaze);
-        EventBus<ReachEndMaze>.Register(endMazeBinding);
-        EventBus<ResetMaze>.Register(resetMazeBinding);
+        _endMazeBinding =  new EventBinding<ReachEndMaze>(OnPlayerEndMaze);
+        _resetMazeBinding =  new EventBinding<ResetMaze>(OnResetMaze);
+        EventBus<ReachEndMaze>.Register(_endMazeBinding);
+        EventBus<ResetMaze>.Register(_resetMazeBinding);
     }
 
     private void OnDisable()
     {
-        EventBus<ReachEndMaze>.Deregister(endMazeBinding);
-        EventBus<ResetMaze>.Deregister(resetMazeBinding);
+        EventBus<ReachEndMaze>.Deregister(_endMazeBinding);
+        EventBus<ResetMaze>.Deregister(_resetMazeBinding);
     }
 
     private void Start()
     {
-        GenerateRNGMessage();
+        GenerateRngMessage();
     }
 
-    private void GenerateRNGMessage()
+    private void GenerateRngMessage()
     {
         string json = Resources.Load<TextAsset>("end_messages").text;
-        endMessageData =  JsonUtility.FromJson<EndMessageList>(json);
-        randomPhraseTitle = endMessageData.endPhrases[Random.Range(0, endMessageData.endPhrases.Count)];
-        randomPhraseBody = endMessageData.endPhrases[Random.Range(0, endMessageData.endPhrases.Count)];
-        bodyRNG = randomPhraseBody.body;
-        titleRNG = randomPhraseTitle.title;
+        _endMessageData =  JsonUtility.FromJson<EndMessageList>(json);
+        _randomPhraseTitle = _endMessageData.endPhrases[Random.Range(0, _endMessageData.endPhrases.Count)];
+        _randomPhraseBody = _endMessageData.endPhrases[Random.Range(0, _endMessageData.endPhrases.Count)];
+        _bodyRng = _randomPhraseBody.body;
+        _titleRng = _randomPhraseTitle.title;
     }
 
     private void OnPlayerEndMaze()
     {
         // Ensure the EndScreenGameObject is active immediately
-        EndScreenGameObject.SetActive(true);
+        endScreenGameObject.SetActive(true);
 
         // Set text first
-        titleText.text = titleRNG;
-        bodyText.GetComponent<TypewriteEffect>().SetText(bodyRNG);
+        titleText.text = _titleRng;
+        bodyText.GetComponent<TypewriteEffect>().SetText(_bodyRng);
 
         // Delay starting the effect slightly to ensure initialization
         StartCoroutine(DelayStartEffect());
@@ -78,8 +78,8 @@ public class EndScreenManager : MonoBehaviour
 
     private void OnResetMaze()
     {
-        GenerateRNGMessage();
-        EndScreenGameObject.SetActive(false);
+        GenerateRngMessage();
+        endScreenGameObject.SetActive(false);
     }
 
     public void OnCharacterSelectButton()

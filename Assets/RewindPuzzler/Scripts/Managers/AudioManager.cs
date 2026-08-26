@@ -6,37 +6,37 @@ using DG.Tweening;
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource BGMAudio;
+    private AudioSource _bgmAudio;
 
-    private EventBinding<ReachEndMaze> playerEndMazeBinding;
-    private EventBinding<ResetMaze> resetMazeBiding;
+    private EventBinding<ReachEndMaze> _playerEndMazeBinding;
+    private EventBinding<ResetMaze> _resetMazeBiding;
 
     private void Start()
     {
-        BGMAudio = GetComponent<AudioSource>();
+        _bgmAudio = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
     {
-        playerEndMazeBinding =  new EventBinding<ReachEndMaze>(OnPlayerEndMaze);
-        resetMazeBiding =  new EventBinding<ResetMaze>(OnResetMaze);
-        EventBus<ReachEndMaze>.Register(playerEndMazeBinding);
-        EventBus<ResetMaze>.Register(resetMazeBiding);
+        _playerEndMazeBinding =  new EventBinding<ReachEndMaze>(OnPlayerEndMaze);
+        _resetMazeBiding =  new EventBinding<ResetMaze>(OnResetMaze);
+        EventBus<ReachEndMaze>.Register(_playerEndMazeBinding);
+        EventBus<ResetMaze>.Register(_resetMazeBiding);
     }
 
     private void OnPlayerEndMaze()
     {
-        BGMAudio.DOFade(0,1f);
+        _bgmAudio.DOFade(0,1f);
     }
 
     private void OnResetMaze()
     {
-        BGMAudio.DOFade(1f,1f);        
+        _bgmAudio.DOFade(1f,1f);        
     }
 
     private void OnDisable()
     {
-        EventBus<ReachEndMaze>.Deregister(playerEndMazeBinding);
-        EventBus<ResetMaze>.Deregister(resetMazeBiding);
+        EventBus<ReachEndMaze>.Deregister(_playerEndMazeBinding);
+        EventBus<ResetMaze>.Deregister(_resetMazeBiding);
     }
 }

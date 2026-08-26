@@ -5,62 +5,78 @@ using RewindPuzzler.Core.EventBus;
 
 public class InputClientManager : MonoBehaviour
 {
-    private RewindPuzzlerApp _rewindPuzzlerApp;
-    private PlayerInputSystemActions inputActions;
-
-    [SerializeField]
-    private MovementReciever movementReciever;
-
     [SerializeField]
     private SeededMazeGenerator maze;
-
-    private EventBinding<ResetMaze> resetMazeBinding;
-
-    private bool endMazeFlag;
-
-    public MovementReciever MovementReciever { get => movementReciever; set => movementReciever = value; }
+    private RewindPuzzlerApp _rewindPuzzlerApp;
+    private PlayerInputSystemActions _inputActions;
+    private MovementReciever _movementReciever;
+    private EventBinding<ResetMaze> _resetMazeBinding;
+    private bool _endMazeFlag;
+    public MovementReciever MovementReciever { get => _movementReciever; set => _movementReciever = value; }
 
     private void Awake()
     {
         _rewindPuzzlerApp =  new();
-        inputActions = new();
-        inputActions.Player.Enable();
-        inputActions.Player.Move.performed += OnMovePlayer;
-        inputActions.Player.Undo.performed += OnUndo;
+        _inputActions = new();
+        _inputActions.Player.Enable();
+        _inputActions.Player.Move.performed += OnMovePlayer;
+        _inputActions.Player.Undo.performed += OnUndo;
     }
 
     void OnEnable()
     {
-        resetMazeBinding =  new EventBinding<ResetMaze>(Reset);
-        EventBus<ResetMaze>.Register(resetMazeBinding);
+        _resetMazeBinding =  new EventBinding<ResetMaze>(Reset);
+        EventBus<ResetMaze>.Register(_resetMazeBinding);
     }
 
     void OnDisable()
     {        
-        EventBus<ResetMaze>.Deregister(resetMazeBinding);
+        EventBus<ResetMaze>.Deregister(_resetMazeBinding);
     }
 
     //Called on GenerateButton UI unityButton
     public void Reset()
     {
-        movementReciever.transform.position = maze.StartWorldPosition;
+        _movementReciever.transform.position = maze.StartWorldPosition;
         _rewindPuzzlerApp.ResetStack();
-        endMazeFlag = false;
+        _endMazeFlag = false;
+        _movementReciever.gameObject.SetActive(true);
+        _movementReciever.EnableMovement();
     }
 
     private void OnMovePlayer(InputAction.CallbackContext context)
     {
-        Vector2 movement = context.ReadValue<Vector2>();
-        if(!movementReciever)
+        Vector2Int movement = ToCardinalStep(context.ReadValue<Vector2>());
+        if(!_movementReciever)
             return;
-        if (movementReciever.IsValidMove(movement))
+        if (movement == Vector2Int.zero)
+            return;
+        if (_movementReciever.IsValidMove(movement))
         {
-            ICommand moveCommand = new MoveCommand(movement, movementReciever, maze);
+            ICommand moveCommand = new MoveCommand(movement, _movementReciever);
             _rewindPuzzlerApp.ExecuteCommand(moveCommand);
 
             // Check if player reached the end position after the move
             CheckIfPlayerReachedEnd();
         }
+    }
+
+    /// <summary>
+    /// Turns raw input into a single one-unit step. Diagonals (both axes pressed) are
+    /// ignored so the player can never move between two tiles at once.
+    /// </summary>
+    private static Vector2Int ToCardinalStep(Vector2 input)
+    {
+        const float threshold = 0.5f;
+        bool horizontal = Mathf.Abs(input.x) >= threshold;
+        bool vertical = Mathf.Abs(input.y) >= threshold;
+
+        if (horizontal == vertical)
+            return Vector2Int.zero;
+
+        return horizontal
+            ? new Vector2Int(input.x > 0f ? 1 : -1, 0)
+            : new Vector2Int(0, input.y > 0f ? 1 : -1);
     }
 
     private void OnUndo(InputAction.CallbackContext context)
@@ -71,14 +87,14 @@ public class InputClientManager : MonoBehaviour
     private void CheckIfPlayerReachedEnd()
     {
         // Check if the player's current position matches the end position of the maze
-        if (movementReciever.transform.position == maze.EndWorldPosition)
+        if (_movementReciever.transform.position == maze.EndWorldPosition)
         {
-            if (!endMazeFlag)
+            if (!_endMazeFlag)
             {
-                endMazeFlag = true;
+                _endMazeFlag = true;
                 // Raise event that player has reached the end of the maze
                 EventBus<ReachEndMaze>.Raise(new ReachEndMaze());
-                Destroy(movementReciever.gameObject);
+                _movementReciever.gameObject.SetActive(false);
             }
         }
     }

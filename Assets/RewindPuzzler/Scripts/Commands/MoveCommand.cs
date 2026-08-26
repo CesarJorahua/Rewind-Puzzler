@@ -3,14 +3,12 @@ using UnityEngine;
 public class MoveCommand : ICommand
 {
     MovementReciever _player;
-    Vector2 _movement;
-    SeededMazeGenerator _maze;
+    Vector2Int _movement;
 
-    public MoveCommand(Vector2 movement, MovementReciever manager, SeededMazeGenerator maze)
+    public MoveCommand(Vector2Int movement, MovementReciever manager)
     {
         _movement = movement;
         _player = manager;
-        _maze = maze;
     }
 
     public void Execute()

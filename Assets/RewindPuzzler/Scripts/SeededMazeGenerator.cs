@@ -24,27 +24,23 @@ public class SeededMazeGenerator : MonoBehaviour
     [SerializeField] private TileBase wallTile;
     [SerializeField] private TileBase floorTile;
 
-    private string seedInput = "";
+    private string _seedInput = "";
     // true = wall, false = floor
-    private bool[,] grid;
-    private int size = 19;
+    private bool[,] _grid;
+    private int _size = 19;
 
-    /// <summary>Query helper for gameplay (pathfinding, spawn checks, etc.).</summary>
-    public bool IsWall(int x, int y) => grid[x, y];
-    public int Size => size;
-
-    public Vector2Int StartPosition => new(1, 0);
-    public Vector2Int EndPosition => new(size - 2, size - 1);
+    private static Vector2Int StartPosition => new(1, 0);
+    private Vector2Int EndPosition => new(_size - 2, _size - 1);
 
     public Vector3 StartWorldPosition => GetWorldPosition(StartPosition);
     public Vector3 EndWorldPosition => GetWorldPosition(EndPosition);
 
-    private EventBinding<ResetMaze> resetMazeBinding;
-    private EventBinding<GameStarted> gameStartedBinding;
+    private EventBinding<ResetMaze> _resetMazeBinding;
+    private EventBinding<GameStarted> _gameStartedBinding;
 
     private void Start()
     {
-        RNGGenerate();
+        RngGenerate();
         inputField.navigation = new Navigation
         {
             mode = Navigation.Mode.None
@@ -55,30 +51,30 @@ public class SeededMazeGenerator : MonoBehaviour
 
     void OnEnable()
     {
-        resetMazeBinding = new(RNGGenerate);
-        gameStartedBinding = new (OnGameStarted);
-        EventBus<ResetMaze>.Register(resetMazeBinding);
-        EventBus<GameStarted>.Register(gameStartedBinding);
+        _resetMazeBinding = new(RngGenerate);
+        _gameStartedBinding = new (OnGameStarted);
+        EventBus<ResetMaze>.Register(_resetMazeBinding);
+        EventBus<GameStarted>.Register(_gameStartedBinding);
     }
 
     void OnDisable()
     {
-        EventBus<ResetMaze>.Deregister(resetMazeBinding);
-        EventBus<GameStarted>.Deregister(gameStartedBinding);
+        EventBus<ResetMaze>.Deregister(_resetMazeBinding);
+        EventBus<GameStarted>.Deregister(_gameStartedBinding);
     }
 
     private void OnGameStarted()
     {
         gridObject.SetActive(true);
         canvasInputObject.SetActive(true);
-        RNGGenerate();
+        RngGenerate();
     }
 
 
     /// <summary>Public entry point — hook this to a UI InputField + Button.</summary>
     private void Generate(string seed)
     {
-        seedInput = seed;
+        _seedInput = seed;
 
         inputField.DeactivateInputField();
         EventSystem.current.SetSelectedGameObject(null);
@@ -90,14 +86,14 @@ public class SeededMazeGenerator : MonoBehaviour
         }
 
         var rng = new System.Random(rngSeed);
-        grid = CarveMaze(size, rng);
+        _grid = CarveMaze(_size, rng);
         Render();
     }
 
-    public void RNGGenerate()
+    private void RngGenerate()
     {
         CreateRandomSeed();
-        Generate(seedInput);
+        Generate(_seedInput);
     }
 
     public void GenerateWithInput()
@@ -112,14 +108,14 @@ public class SeededMazeGenerator : MonoBehaviour
         // it doesn't participate in maze generation itself.
         String seed = UnityEngine.Random.Range(0, int.MaxValue).ToString("X"); // hex looks seed-y
         inputField.text = seed;
-        seedInput = seed;
+        _seedInput = seed;
     }
 
-    // ---------------- Worl position ----------------
+    // ---------------- World position ----------------
 
-    public Vector3 GetWorldPosition(Vector2Int mazePosition)
+    private Vector3 GetWorldPosition(Vector2Int mazePosition)
     {
-        int offset = size / 2;
+        int offset = _size / 2;
 
         Vector3Int tilePosition = new(
             mazePosition.x - offset,
@@ -136,14 +132,14 @@ public class SeededMazeGenerator : MonoBehaviour
     {
         rngSeed = 0;
         if (string.IsNullOrWhiteSpace(seed)) return false;
-        rngSeed = Fnv1aHash(seed);
+        rngSeed = Fnv1AHash(seed);
         return true;
     }
 
     /// <summary>
     /// FNV-1a: deterministic across platforms/runtimes, unlike string.GetHashCode().
     /// </summary>
-    private static int Fnv1aHash(string text)
+    private static int Fnv1AHash(string text)
     {
         unchecked
         {
@@ -231,18 +227,18 @@ public class SeededMazeGenerator : MonoBehaviour
         }
 
         wallTilemap.ClearAllTiles();
-        int offset = size / 2;
+        int offset = _size / 2;
 
-        for (int y = 0; y < size; y++)
+        for (int y = 0; y < _size; y++)
         {
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < _size; x++)
             {
                 Vector3Int pos = new(
                     x - offset,
                     y - offset,
                     0
                 );
-                if (grid[x, y])
+                if (_grid[x, y])
                 {
                     wallTilemap.SetTile(pos, wallTile);
                 }
